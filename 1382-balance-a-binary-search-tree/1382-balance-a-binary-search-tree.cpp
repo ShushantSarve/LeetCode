@@ -23,7 +23,7 @@ public:
         
     }
     
-    TreeNode* inorderToBST(int s, int e, vector<int> inorderv){
+    TreeNode* inorderToBST(int s, int e, vector<int> &inorderv){
         
         //base case
         if(s>e){
