@@ -13,14 +13,17 @@ class Solution {
 public:
     void leafNode(TreeNode* root, vector<int> &v){
     
+        // base case
         if(root == NULL){
             return;
         }
         
+        //leaf node condition
         if(root->left == NULL && root->right == NULL){
             v.push_back(root->val);
         }
         
+        //recursive calls
         leafNode(root->left, v);
         leafNode(root->right, v);
         
@@ -34,21 +37,11 @@ public:
         vector<int> r2; 
         leafNode(root2, r2);
         
-        int n;
-        if(r1.size() > r2.size()){
-            n = r1.size();
+        //comparing the leaf nodes from vector
+        if(r1 == r2){
+            return true;
         }
-        else{
-            n = r2.size();
-        }
-        
-        for(int i=0; i<n; i++){
-            if(r1[i] != r2[i]){
-                return false;
-            }    
-        }
-               
-        return true;
+        return false;
         
     }
 };
