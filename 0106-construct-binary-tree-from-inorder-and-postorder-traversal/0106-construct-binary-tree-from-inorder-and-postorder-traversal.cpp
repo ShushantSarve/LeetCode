@@ -11,42 +11,39 @@
  */
 class Solution {
 public:
-    void createMap(vector<int> inorder, int n, map<int, int> &NodeToIndex){
+    int findPosition(vector<int> inorder, int position, int n){
         for(int i=0; i<n; i++){
-            NodeToIndex[inorder[i]] = i;
+            if(inorder[i] == position){
+                return i;
+            }
         }
+        return -1;
     }
-    TreeNode* solve(vector<int> &inorder, vector<int> &postorder, int &index, int inStart, int inEnd, int n, map<int, int> &NodeToIndex){
+    
+    TreeNode* solve(vector<int> inorder, vector<int> postorder, int &index, int inStart, int inEnd, int n){
         
-        //  Base case
+        //base case
         if(index < 0 || inStart > inEnd){
             return NULL;
         }
         
         int element = postorder[index--];
-        
         TreeNode* root = new TreeNode(element);
         
-        int position = NodeToIndex[element];
+        int position = findPosition(inorder, element, n);
         
-        // IMP --> calling the right side of tree first as we are traversing back int the array
+        root->right = solve(inorder, postorder, index, position+1, inEnd, n);
+        root->left = solve(inorder, postorder, index, inStart, position-1, n);
         
-        root->right = solve(inorder, postorder, index, position+1, inEnd, n, NodeToIndex);
-        root->left = solve(inorder, postorder, index, inStart, position-1, n, NodeToIndex);
-        
-        return root;
-        
+        return root;    
     }
+    
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
         
-        int index = postorder.size()-1;
         int n = inorder.size();
+        int index = n-1;
         
-        //  mapping the elements
-        map<int, int> NodeToIndex;
-        createMap(inorder, n, NodeToIndex);
-        
-        TreeNode* ans = solve(inorder, postorder, index, 0, n-1, n, NodeToIndex);
+        TreeNode* ans = solve(inorder, postorder, index, 0, n-1, n);
         
         return ans;
         
