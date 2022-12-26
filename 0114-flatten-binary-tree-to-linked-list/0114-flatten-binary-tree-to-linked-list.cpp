@@ -12,13 +12,25 @@
 class Solution {
 public:
     void flatten(TreeNode* root) {
-        if (root) revPreOrder(root);
-    }
-private:
-    TreeNode* head = nullptr;
-    void revPreOrder(TreeNode* node) {
-        if (node->right) revPreOrder(node->right);
-        if (node->left) revPreOrder(node->left);
-        node->left = nullptr, node->right = head, head = node;
+        
+        if(root == NULL){
+            return;
+        }
+        
+        TreeNode* curr = root, *prev = NULL;
+        
+        while(curr != NULL){
+            if(curr->left){
+                prev = curr->left;
+                    while(prev->right){
+                        prev = prev->right;
+                    }
+                    prev->right = curr->right;
+                    curr->right = curr->left;
+                    curr->left = NULL;
+            }
+            curr = curr->right;
+        }
+        
     }
 };
