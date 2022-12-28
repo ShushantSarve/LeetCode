@@ -11,34 +11,44 @@
  */
 class Solution {
 public:
-    int solve(TreeNode* root, int k, int &i){
-        
-        if(root == NULL){
-            return -1;
-        }
-        // L N R
-
-        //L
-        int left = solve(root->left, k, i);
-        if(left != -1){
-            return left;
-        }
-        
-        //N
-        i++;
-        if(i == k){
-            return root->val;
-        }
-        
-        //R
-        return solve(root->right, k, i);
-        
-        
-    }
     int kthSmallest(TreeNode* root, int k) {
         
-        int i=0; 
-        return solve(root, k, i);
+        //Morris traversal
+        TreeNode *curr , *prev;
+        int i = 0, ans = 0;
         
+        while(curr){
+                
+            if(curr->left){
+                
+                prev = curr->left;
+                while(prev->right != NULL && prev->right != curr){
+                    prev = prev->right;
+                }
+                
+                if(prev->right){
+                    prev->right = NULL;
+                    i++;
+                    if(i == k){
+                        ans = curr->val;
+                    }
+                    curr = curr->right;
+                }
+                else{
+                    prev->right = curr;
+                    curr = curr->left;
+                }
+                
+            }
+            else{
+                i++;
+                if(i == k){
+                    ans = curr->val;
+                }
+                curr = curr->right;
+            }
+            
+        }
+        return ans;
     }
 };
