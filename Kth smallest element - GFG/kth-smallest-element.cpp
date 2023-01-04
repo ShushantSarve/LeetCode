@@ -26,8 +26,10 @@ class Solution{
                 pq.push(arr[i]);
             }
         }
+        
         int ans = pq.top();
         return ans;
+        
     }
 };
 
